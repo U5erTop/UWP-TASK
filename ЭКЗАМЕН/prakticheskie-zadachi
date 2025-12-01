@@ -1,0 +1,2112 @@
+# Практические задачи (UWP)
+## Дисциплина: Разработка программных модулей
+### Специальность: 09.02.07 - Информационные системы и программирование
+### Квалификация: Программист
+
+---
+
+## БИЛЕТ № 1 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 1.1
+**Тема: Создание простого приложения с использованием принципов ООП**
+
+Разработайте UWP приложение для калькулятора, который выполняет базовые арифметические операции (сложение, вычитание, умножение, деление). 
+
+**Требования:**
+- Создать класс `Calculator` с методами для каждой операции
+- Реализовать инкапсуляцию: скрыть внутренние данные класса
+- Создать XAML интерфейс с текстовым полем для отображения результата и кнопками для цифр и операций
+- Обработать ошибки (например, деление на ноль)
+- Отобразить результат вычисления в TextBlock после нажатия кнопки "="
+
+**Подсказка по коду:**
+```csharp
+public class Calculator
+{
+    private double firstNumber;
+    private double secondNumber;
+    private string operation;
+    
+    public double Calculate(double num1, double num2, string op)
+    {
+        // Реализовать логику вычислений
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильная структура класса
+- Корректная работа всех операций
+- Обработка исключений
+- Функциональный UI
+
+---
+
+### Практическая задача 1.2
+**Тема: Тестирование функциональности приложения**
+
+Для приложения из задачи 1.1 напишите набор unit-тестов, которые проверяют:
+
+**Требования:**
+- Тест на сложение двух чисел
+- Тест на вычитание двух чисел
+- Тест на умножение двух чисел
+- Тест на деление двух чисел
+- Тест на обработку деления на ноль (должно выбросить исключение или вернуть специальное значение)
+- Тест на граничные значения (очень большие числа, очень маленькие числа)
+
+**Подсказка по коду:**
+```csharp
+[TestMethod]
+public void TestAddition()
+{
+    Calculator calc = new Calculator();
+    double result = calc.Calculate(5, 3, "+");
+    Assert.AreEqual(8, result);
+}
+```
+
+**Критерии оценки:**
+- Количество и качество тестов
+- Покрытие основных сценариев
+- Корректность утверждений (Assert)
+
+---
+
+## БИЛЕТ № 2 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 2.1
+**Тема: Использование паттерна Factory Method**
+
+Разработайте UWP приложение, которое использует паттерн Factory Method для создания различных типов уведомлений (Error, Warning, Info).
+
+**Требования:**
+- Создать абстрактный класс `Notification` с методом `Display()`
+- Создать конкретные классы `ErrorNotification`, `WarningNotification`, `InfoNotification`
+- Создать класс `NotificationFactory` с методом создания уведомлений
+- В UI разместить 3 кнопки для создания каждого типа уведомления
+- Отобразить уведомления в TextBlock с соответствующим цветом текста (красный для ошибок, оранжевый для предупреждений, синий для информации)
+
+**Подсказка по коду:**
+```csharp
+public abstract class Notification
+{
+    public abstract string GetMessage();
+}
+
+public class NotificationFactory
+{
+    public static Notification CreateNotification(string type)
+    {
+        switch(type)
+        {
+            case "error": return new ErrorNotification();
+            // ... остальные типы
+        }
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильная реализация паттерна Factory
+- Наследование и полиморфизм
+- Функциональный UI с цветовым различием
+
+---
+
+### Практическая задача 2.2
+**Тема: Проектирование схемы базы данных**
+
+Спроектируйте схему базы данных для простого приложения управления студентами и их оценками.
+
+**Требования:**
+- Создать таблицу `Students` (ID, FullName, GroupNumber, BirthDate)
+- Создать таблицу `Subjects` (ID, SubjectName, Credits)
+- Создать таблицу `Grades` (ID, StudentID, SubjectID, Grade, DateReceived)
+- Определить первичные и внешние ключи
+- Написать SQL запросы для:
+  - Получения всех студентов группы
+  - Получения оценок конкретного студента
+  - Подсчёта среднего балла студента
+
+**SQL код:**
+```sql
+CREATE TABLE Students (
+    ID INT PRIMARY KEY IDENTITY(1,1),
+    FullName NVARCHAR(100) NOT NULL,
+    GroupNumber NVARCHAR(20),
+    BirthDate DATE
+);
+
+-- ... создание остальных таблиц
+```
+
+**Критерии оценки:**
+- Правильная структура таблиц
+- Правильно определены ключи
+- Корректные SQL запросы
+
+---
+
+## БИЛЕТ № 3 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 3.1
+**Тема: Многоуровневая архитектура приложения**
+
+Разработайте UWP приложение с трёхслойной архитектурой (UI Layer, Business Logic Layer, Data Access Layer) для управления списком товаров.
+
+**Требования:**
+- **UI Layer (XAML/Code-behind)**: Отображение списка товаров, кнопки добавления/удаления
+- **Business Logic Layer**: Класс `ProductService` с методами управления товарами
+- **Data Access Layer**: Класс `ProductRepository` для работы с данными
+- Реализовать отделение ответственности между слоями
+- В списке отображать товары с названием, ценой и количеством
+
+**Структура папок:**
+```
+Models/
+  - Product.cs
+Services/
+  - ProductService.cs
+Repositories/
+  - ProductRepository.cs
+Views/
+  - MainPage.xaml
+```
+
+**Критерии оценки:**
+- Четкое разделение на слои
+- Зависимость между слоями в одном направлении
+- Функциональное приложение
+- Добавление и удаление товаров работает
+
+---
+
+### Практическая задача 3.2
+**Тема: Система контроля версий и командная разработка**
+
+Опишите и разработайте план использования Git для командной разработки на проекте (не менее 5 человек).
+
+**Требования:**
+- Определить структуру ветвей (main, develop, feature/*, hotfix/*)
+- Описать процесс создания новой фичи (от создания ветки до merge в develop)
+- Описать процесс pull request и code review
+- Привести примеры команд Git для типичных сценариев
+- Описать разрешение конфликтов при слиянии
+- Создать файл CONTRIBUTING.md с руководством для участников проекта
+
+**Примеры команд:**
+```bash
+# Создание новой фичи
+git checkout -b feature/add-product-list
+git add .
+git commit -m "feat: добавлен список продуктов"
+git push origin feature/add-product-list
+
+# Обновление данных из develop
+git pull origin develop
+```
+
+**Критерии оценки:**
+- Полнота описания процесса
+- Правильность команд Git
+- Логичность структуры ветвей
+- Наличие документации
+
+---
+
+## БИЛЕТ № 4 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 4.1
+**Тема: Анализ сложности алгоритмов**
+
+Реализуйте несколько алгоритмов поиска и сортировки, проанализируйте их сложность.
+
+**Требования:**
+- Реализовать линейный поиск O(n)
+- Реализовать бинарный поиск O(log n)
+- Реализовать сортировку пузырьком O(n²)
+- Реализовать быструю сортировку O(n log n)
+- Для каждого алгоритма указать временную и пространственную сложность
+- Создать простой тест для сравнения времени выполнения на массиве из 1000 элементов
+
+**Код:**
+```csharp
+public class SearchAlgorithms
+{
+    // Линейный поиск - O(n)
+    public static int LinearSearch(int[] array, int target)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == target) return i;
+        }
+        return -1;
+    }
+    
+    // Бинарный поиск - O(log n)
+    public static int BinarySearch(int[] array, int target)
+    {
+        // Реализовать
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность реализации алгоритмов
+- Корректный анализ сложности
+- Наличие тестов производительности
+
+---
+
+### Практическая задача 4.2
+**Тема: Работа со структурами данных**
+
+Разработайте UWP приложение, демонстрирующее работу основных структур данных.
+
+**Требования:**
+- Создать класс `Stack<T>` (стек) с методами Push, Pop, Peek
+- Создать класс `Queue<T>` (очередь) с методами Enqueue, Dequeue, Peek
+- В UI разместить две вкладки: одна для стека, другая для очереди
+- Позволить пользователю добавлять элементы, удалять их
+- Отображать текущее содержимое структуры в ListBox
+- Вывести операции в TextBlock (например, "Добавлено значение 5", "Удалено значение 3")
+
+**Код:**
+```csharp
+public class Stack<T>
+{
+    private List<T> items = new List<T>();
+    
+    public void Push(T item) => items.Add(item);
+    public T Pop() => items.RemoveAt(items.Count - 1);
+    public T Peek() => items[items.Count - 1];
+}
+```
+
+**Критерии оценки:**
+- Правильность реализации структур
+- Функциональный UI
+- Корректность операций добавления/удаления
+
+---
+
+## БИЛЕТ № 5 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 5.1
+**Тема: Чистый код и документирование**
+
+Возьмите плохо документированный и неструктурированный код (предоставить примеры) и рефакторите его согласно принципам Clean Code.
+
+**Требования:**
+- Переименовать переменные на понятные имена
+- Разбить большие методы на меньшие
+- Добавить XML документацию ко всем public методам
+- Удалить дублирующийся код
+- Добавить обработку ошибок
+- Написать комментарии только для сложной бизнес-логики
+
+**Пример исходного кода (плохой):**
+```csharp
+public void d(int x)
+{
+    if (x > 0)
+        for (int i = 0; i < x; i++)
+            for (int j = 0; j < x; j++)
+                if (i == j) Console.Write("1 ");
+                else Console.Write("0 ");
+    else Console.WriteLine("Error");
+}
+```
+
+**Требуемый результат:**
+```csharp
+/// <summary>
+/// Выводит единичную матрицу размером n x n
+/// </summary>
+/// <param name="size">Размер матрицы</param>
+/// <exception cref="ArgumentException">Если размер меньше или равен 0</exception>
+public void PrintIdentityMatrix(int size)
+{
+    ValidateMatrixSize(size);
+    
+    for (int row = 0; row < size; row++)
+    {
+        PrintMatrixRow(row, size);
+    }
+}
+```
+
+**Критерии оценки:**
+- Качество переименования переменных
+- Правильность разбиения на методы
+- Наличие документации
+- Удаление дублирования
+- Улучшение читаемости
+
+---
+
+### Практическая задача 5.2
+**Тема: Безопасность приложения**
+
+Разработайте простое UWP приложение с системой регистрации и авторизации пользователей с учётом безопасности.
+
+**Требования:**
+- Создать форму регистрации с полями: Email, Password, ConfirmPassword
+- Реализовать валидацию:
+  - Email должен быть в правильном формате (regex)
+  - Пароль должен быть не менее 8 символов
+  - Пароли должны совпадать
+- Хешировать пароль перед сохранением (использовать SHA256)
+- Сохранить пользователей в локальной БД (SQLite)
+- Создать форму входа
+- Сравнить введённый пароль с хешем из БД
+
+**Код валидации:**
+```csharp
+public class UserValidator
+{
+    private static readonly Regex EmailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    
+    public bool ValidateEmail(string email) => EmailRegex.IsMatch(email);
+    
+    public bool ValidatePassword(string password) => password.Length >= 8;
+    
+    public string HashPassword(string password)
+    {
+        using (var sha256 = System.Security.Cryptography.SHA256.Create())
+        {
+            var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hash);
+        }
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильная валидация данных
+- Корректное хеширование паролей
+- Безопасное хранение в БД
+- Функциональная система регистрации/входа
+
+---
+
+## БИЛЕТ № 6 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 6.1
+**Тема: Разработка REST API**
+
+Разработайте простой REST API на ASP.NET Core для управления книгами в библиотеке.
+
+**Требования:**
+- Создать model `Book` (Id, Title, Author, ISBN, PublishYear, Available)
+- Создать ApiController `BooksController` с эндпоинтами:
+  - GET /api/books - получить все книги
+  - GET /api/books/{id} - получить книгу по ID
+  - POST /api/books - создать новую книгу
+  - PUT /api/books/{id} - обновить книгу
+  - DELETE /api/books/{id} - удалить книгу
+- Использовать Entity Framework для работы с БД
+- Добавить обработку ошибок (404, 400, 500)
+- Создать Swagger документацию
+
+**Код контроллера:**
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class BooksController : ControllerBase
+{
+    private readonly IBookService _bookService;
+    
+    public BooksController(IBookService bookService)
+    {
+        _bookService = bookService;
+    }
+    
+    /// <summary>
+    /// Получить все книги
+    /// </summary>
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
+    {
+        var books = await _bookService.GetAllBooksAsync();
+        return Ok(books);
+    }
+}
+```
+
+**Критерии оценки:**
+- Все CRUD операции работают
+- Правильная структура API
+- Обработка ошибок
+- Наличие документации Swagger
+
+---
+
+### Практическая задача 6.2
+**Тема: Версионирование API**
+
+Дополните API из предыдущей задачи поддержкой версионирования.
+
+**Требования:**
+- Создать две версии API: v1 и v2
+- В v1: GET /api/v1/books возвращает только базовую информацию (Title, Author)
+- В v2: GET /api/v2/books возвращает полную информацию (Title, Author, ISBN, PublishYear, Available, Reviews)
+- Использовать URL-based версионирование (/api/v1, /api/v2)
+- Описать различия между версиями в документации
+- Показать как постепенно переводить клиентов с v1 на v2
+
+**Структура:**
+```csharp
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
+public class BooksController : ControllerBase { }
+
+[ApiVersion("2.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
+public class BooksV2Controller : ControllerBase { }
+```
+
+**Критерии оценки:**
+- Обе версии работают корректно
+- Разные структуры данных для разных версий
+- Понимание стратегии версионирования
+- Документация для обеих версий
+
+---
+
+## БИЛЕТ № 7 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 7.1
+**Тема: Отладка и профилирование приложения**
+
+Разработайте UWP приложение и отладьте его, используя различные инструменты.
+
+**Требования:**
+- Создать приложение с несколькими методами, содержащими ошибки (например, null reference)
+- Использовать breakpoints для остановки выполнения
+- Пошагово пройти через код и инспектировать переменные
+- Использовать окно Output для просмотра логов
+- Профилировать приложение на предмет утечек памяти
+- Документировать найденные проблемы и способы их решения
+
+**Пример кода для отладки:**
+```csharp
+public void ProblematicMethod()
+{
+    List<string> items = null;
+    // Здесь будет ошибка NullReferenceException
+    for (int i = 0; i < items.Count; i++)
+    {
+        Debug.WriteLine($"Item: {items[i]}");
+    }
+}
+```
+
+**Критерии оценки:**
+- Найдены все ошибки
+- Правильное использование отладчика
+- Документированы найденные проблемы
+- Ошибки исправлены
+
+---
+
+### Практическая задача 7.2
+**Тема: Проектирование пользовательского интерфейса**
+
+Спроектируйте и разработайте UI для мобильного приложения "Трекер привычек".
+
+**Требования:**
+- Создать макет в Figma или на бумаге
+- Реализовать в XAML следующие экраны:
+  - Главный экран со списком привычек
+  - Экран создания новой привычки
+  - Экран просмотра прогресса привычки
+- Использовать понятную навигацию
+- Применить принципы UX (удобство использования)
+- Экран должен быть адаптивным для разных размеров
+- Использовать цветовую схему и типографику
+
+**XAML структура:**
+```xml
+<Page x:Class="HabitTracker.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <StackPanel Spacing="10" Padding="20">
+            <TextBlock Text="Мои привычки" Style="{StaticResource TitleTextBlockStyle}"/>
+            <ListView x:Name="HabitsList" ItemsSource="{Binding Habits}"/>
+            <Button Content="+ Новая привычка" Click="AddHabit_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
+```
+
+**Критерии оценки:**
+- Логичная структура UI
+- Удобная навигация
+- Применение принципов UX
+- Адаптивность дизайна
+- Внешний вид приложения
+
+---
+
+## БИЛЕТ № 8 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 8.1
+**Тема: Парадигмы программирования**
+
+Реализуйте одну задачу на трёх парадигмах программирования: процедурной, объектно-ориентированной и функциональной.
+
+**Задача:** Вычислить сумму квадратов чисел от 1 до N
+
+**Процедурная парадигма:**
+```csharp
+public static int SumOfSquaresProcedural(int n)
+{
+    int sum = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        sum += i * i;
+    }
+    return sum;
+}
+```
+
+**ООП парадигма:**
+```csharp
+public class MathCalculator
+{
+    private int _sum;
+    
+    public int Calculate(int n)
+    {
+        _sum = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            _sum = AddSquare(_sum, i);
+        }
+        return _sum;
+    }
+    
+    private int AddSquare(int current, int number) => current + (number * number);
+}
+```
+
+**Функциональная парадигма:**
+```csharp
+public static int SumOfSquaresFunctional(int n)
+{
+    return Enumerable.Range(1, n)
+                     .Select(x => x * x)
+                     .Aggregate((acc, x) => acc + x);
+}
+```
+
+**Требования:**
+- Реализовать все три подхода
+- Сравнить производительность
+- Объяснить преимущества и недостатки каждого подхода
+- Написать unit-тесты для каждой реализации
+
+**Критерии оценки:**
+- Правильность всех реализаций
+- Качество сравнения
+- Понимание различий парадигм
+- Наличие тестов
+
+---
+
+### Практическая задача 8.2
+**Тема: Работа с файлами и потоками**
+
+Разработайте консольное приложение для обработки больших текстовых файлов.
+
+**Требования:**
+- Прочитать текстовый файл асинхронно
+- Подсчитать количество строк, слов и символов
+- Найти самое длинное слово
+- Найти самую частую букву
+- Сохранить результаты в новый файл
+- Обработать ошибки (файл не найден, нет доступа)
+
+**Код:**
+```csharp
+public class FileProcessor
+{
+    public async Task<FileStatistics> ProcessFileAsync(string filePath)
+    {
+        try
+        {
+            string content = await File.ReadAllTextAsync(filePath);
+            
+            var stats = new FileStatistics
+            {
+                LineCount = content.Split('\n').Length,
+                WordCount = content.Split(new[] { ' ', '\n', '\t' }, 
+                           StringSplitOptions.RemoveEmptyEntries).Length,
+                CharCount = content.Length
+            };
+            
+            return stats;
+        }
+        catch (FileNotFoundException)
+        {
+            throw new Exception("Файл не найден");
+        }
+    }
+}
+```
+
+**Критерии оценки:**
+- Корректность подсчёта статистики
+- Асинхронная обработка файла
+- Обработка ошибок
+- Сохранение результатов
+
+---
+
+## БИЛЕТ № 9 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 9.1
+**Тема: Рефакторинг кода**
+
+Возьмите код из любого предыдущего билета и проведите его рефакторинг.
+
+**Требования:**
+- Выделить метод для повторяющегося кода
+- Упростить условия (использовать ternary operator, guard clauses)
+- Переименовать переменные на более понятные
+- Разбить большой метод на несколько маленьких
+- Удалить мёртвый код
+- Добавить документацию
+- Убедиться что тесты всё ещё проходят
+
+**Пример:**
+```csharp
+// До рефакторинга
+public decimal CalculatePrice(List<Item> items, bool isMember, bool hasDiscount)
+{
+    decimal p = 0;
+    for (int i = 0; i < items.Count; i++)
+    {
+        p += items[i].Price;
+    }
+    if (isMember) p = p * 0.9m;
+    if (hasDiscount) p = p * 0.85m;
+    return p;
+}
+
+// После рефакторинга
+public decimal CalculateTotalPrice(List<Item> items, CustomerType customerType)
+{
+    decimal basePrice = CalculateBasePrice(items);
+    decimal priceWithDiscount = ApplyMemberDiscount(basePrice, customerType);
+    return priceWithDiscount;
+}
+
+private decimal CalculateBasePrice(List<Item> items) 
+    => items.Sum(item => item.Price);
+
+private decimal ApplyMemberDiscount(decimal price, CustomerType customerType)
+    => customerType == CustomerType.Premium ? price * 0.9m : price;
+```
+
+**Критерии оценки:**
+- Улучшение читаемости кода
+- Правильное разбиение на методы
+- Все тесты проходят
+- Документация добавлена
+
+---
+
+### Практическая задача 9.2
+**Тема: Регулярные выражения**
+
+Разработайте UWP приложение для валидации различных форматов данных.
+
+**Требования:**
+- Создать валидатор для Email с regex
+- Создать валидатор для номера телефона (+7 (999) 123-45-67)
+- Создать валидатор для URL
+- Создать валидатор для пароля (минимум 8 символов, содержит буквы и цифры)
+- Создать валидатор для даты (DD.MM.YYYY)
+- В UI разместить TextBox для ввода и кнопку проверки
+- Отобразить результат валидации (Green - OK, Red - Error)
+
+**Код:**
+```csharp
+public class RegexValidator
+{
+    private static readonly Dictionary<string, string> Patterns = new()
+    {
+        { "Email", @"^[^@\s]+@[^@\s]+\.[^@\s]+$" },
+        { "Phone", @"^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$" },
+        { "URL", @"^https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*)$" },
+        { "Password", @"^(?=.*[a-zA-Z])(?=.*\d).{8,}$" },
+        { "Date", @"^\d{2}\.\d{2}\.\d{4}$" }
+    };
+    
+    public bool Validate(string pattern, string input)
+    {
+        var regex = new Regex(Patterns[pattern]);
+        return regex.IsMatch(input);
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность всех regex паттернов
+- Функциональный UI
+- Корректная валидация данных
+- Удобство использования
+
+---
+
+## БИЛЕТ № 10 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 10.1
+**Тема: SOLID принципы**
+
+Рефакторите существующий код для соответствия SOLID принципам.
+
+**Требования:**
+- **S - Single Responsibility:** Каждый класс отвечает за одно
+- **O - Open/Closed:** Открыт для расширения, закрыт для изменения
+- **L - Liskov Substitution:** Подклассы могут заменять родительские классы
+- **I - Interface Segregation:** Множество специфичных интерфейсов
+- **D - Dependency Inversion:** Зависимость от абстракций
+
+**Пример до:**
+```csharp
+public class Employee
+{
+    public string Name { get; set; }
+    public double Salary { get; set; }
+    
+    public void CalculateSalary() { } // Может быть разная для разных должностей
+    public void GenerateReport() { }  // Report может быть разных типов
+    public void SendEmail() { }       // Email отправляет разные системы
+}
+```
+
+**Пример после:**
+```csharp
+public interface IEmployee
+{
+    string Name { get; set; }
+}
+
+public interface ISalaryCalculator
+{
+    double CalculateSalary(IEmployee employee);
+}
+
+public interface IReportGenerator
+{
+    void GenerateReport(IEmployee employee);
+}
+
+public class Manager : IEmployee
+{
+    public string Name { get; set; }
+}
+
+public class ManagerSalaryCalculator : ISalaryCalculator
+{
+    public double CalculateSalary(IEmployee employee) { /* Реализация */ }
+}
+```
+
+**Критерии оценки:**
+- Соответствие SOLID принципам
+- Улучшение структуры кода
+- Расширяемость
+- Наличие тестов
+
+---
+
+### Практическая задача 10.2
+**Тема: Асинхронное программирование**
+
+Разработайте UWP приложение для загрузки данных с интернета асинхронно.
+
+**Требования:**
+- Создать класс `WeatherService` для получения погоды по городу
+- Использовать публичный API (например, OpenWeatherMap)
+- Реализовать методы:
+  - `GetWeatherAsync(string city)` - получить погоду
+  - `GetForecastAsync(string city)` - получить прогноз
+- Использовать async/await
+- Обрабатывать ошибки (нет интернета, город не найден)
+- В UI отображать прогресс загрузки (ProgressRing)
+- Отобразить результат в TextBlock
+
+**Код:**
+```csharp
+public class WeatherService
+{
+    private readonly HttpClient _httpClient;
+    
+    public async Task<Weather> GetWeatherAsync(string city)
+    {
+        try
+        {
+            string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid=YOUR_API_KEY";
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<Weather>(response);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new Exception("Ошибка подключения к интернету", ex);
+        }
+    }
+}
+```
+
+**XAML:**
+```xml
+<StackPanel>
+    <TextBox x:Name="CityInput" PlaceholderText="Введите город"/>
+    <Button Content="Получить погоду" Click="GetWeather_Click"/>
+    <ProgressRing x:Name="LoadingProgress" IsActive="False"/>
+    <TextBlock x:Name="WeatherResult" TextWrapping="Wrap"/>
+</StackPanel>
+```
+
+**Критерии оценки:**
+- Правильное использование async/await
+- Обработка ошибок
+- Функциональный UI
+- Корректная работа с API
+
+---
+
+## БИЛЕТ № 11 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 11.1
+**Тема: Микросервисная архитектура**
+
+Разработайте концепцию микросервисной архитектуры для e-commerce системы.
+
+**Требования:**
+- Разделить систему на микросервисы:
+  - UserService (управление пользователями)
+  - ProductService (каталог товаров)
+  - OrderService (управление заказами)
+  - PaymentService (обработка платежей)
+  - NotificationService (отправка уведомлений)
+- Для каждого микросервиса:
+  - Определить ответственность
+  - Описать основные API endpoints
+  - Описать БД (свою или общую)
+  - Описать взаимодействие с другими сервисами
+- Создать диаграмму взаимодействия
+- Описать паттерны коммуникации (REST, Message Queue)
+
+**Структура документа:**
+```
+## Микросервисная архитектура E-Commerce
+
+### UserService
+- Ответственность: Управление профилями пользователей
+- Endpoints:
+  - GET /api/users/{id}
+  - POST /api/users
+  - PUT /api/users/{id}
+- БД: UserDB (SQL)
+
+### ProductService
+- Ответственность: Управление каталогом товаров
+- Endpoints:
+  - GET /api/products
+  - GET /api/products/{id}
+- БД: ProductDB (NoSQL)
+```
+
+**Критерии оценки:**
+- Правильное разделение ответственности
+- Полнота API описания
+- Понимание микросервисных паттернов
+- Качество диаграммы взаимодействия
+
+---
+
+### Практическая задача 11.2
+**Тема: Кэширование данных**
+
+Разработайте UWP приложение с системой кэширования.
+
+**Требования:**
+- Создать сервис `CacheService<T>` для кэширования данных
+- Реализовать различные стратегии вытеснения:
+  - LRU (Least Recently Used) - удаляет давно не используемые
+  - TTL (Time To Live) - удаляет данные через время
+- Методы:
+  - `Get(string key)` - получить из кэша
+  - `Set(string key, T value)` - добавить в кэш
+  - `Remove(string key)` - удалить из кэша
+  - `Clear()` - очистить кэш
+- В UI отобразить содержимое кэша, количество запросов, попадания в кэш
+
+**Код:**
+```csharp
+public class CacheService<T>
+{
+    private Dictionary<string, CacheEntry<T>> _cache = new();
+    private readonly int _maxSize;
+    
+    public CacheService(int maxSize = 100)
+    {
+        _maxSize = maxSize;
+    }
+    
+    public bool TryGet(string key, out T value)
+    {
+        if (_cache.TryGetValue(key, out var entry))
+        {
+            entry.LastAccessTime = DateTime.UtcNow;
+            value = entry.Value;
+            return true;
+        }
+        value = default;
+        return false;
+    }
+    
+    public void Set(string key, T value)
+    {
+        if (_cache.Count >= _maxSize)
+        {
+            EvictLRU();
+        }
+        _cache[key] = new CacheEntry<T> { Value = value, CreatedTime = DateTime.UtcNow };
+    }
+    
+    private void EvictLRU()
+    {
+        var lruKey = _cache.OrderBy(x => x.Value.LastAccessTime).First().Key;
+        _cache.Remove(lruKey);
+    }
+}
+
+public class CacheEntry<T>
+{
+    public T Value { get; set; }
+    public DateTime CreatedTime { get; set; }
+    public DateTime LastAccessTime { get; set; } = DateTime.UtcNow;
+}
+```
+
+**Критерии оценки:**
+- Правильная реализация LRU
+- Работа TTL
+- Функциональный UI
+- Статистика использования кэша
+
+---
+
+## БИЛЕТ № 12 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 12.1
+**Тема: Паттерны поведения (Behavioral Patterns)**
+
+Разработайте UWP приложение, демонстрирующее паттерны Observer, Strategy и Command.
+
+**Требования:**
+
+**Observer Pattern:**
+- Создать класс `WeatherStation` (Subject)
+- Создать классы `PhoneDisplay`, `WebDisplay` (Observers)
+- При обновлении погоды все observers получают уведомление
+
+**Strategy Pattern:**
+- Создать интерфейс `IPaymentStrategy`
+- Реализовать `CreditCardPayment`, `PayPalPayment`, `ApplePayPayment`
+- Позволить пользователю выбрать способ оплаты
+
+**Command Pattern:**
+- Создать класс `RemoteControl`
+- Создать commands: `TurnOnCommand`, `TurnOffCommand`, `VolumeUpCommand`
+- Поддержать undo/redo
+
+**Код Observer:**
+```csharp
+public interface IWeatherObserver
+{
+    void Update(WeatherData data);
+}
+
+public class WeatherStation
+{
+    private List<IWeatherObserver> _observers = new();
+    
+    public void Attach(IWeatherObserver observer) => _observers.Add(observer);
+    
+    public void Notify(WeatherData data)
+    {
+        foreach (var observer in _observers)
+            observer.Update(data);
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность реализации паттернов
+- Функциональное приложение
+- Понимание назначения каждого паттерна
+
+---
+
+### Практическая задача 12.2
+**Тема: Управление конфигурацией приложения**
+
+Разработайте систему управления конфигурацией для UWP приложения.
+
+**Требования:**
+- Создать файл `appsettings.json` с конфигурацией
+- Разные конфигурации для разных окружений (dev, staging, prod)
+- Класс `ConfigurationService` для загрузки и работы с конфигурацией
+- Поддержка переменных окружения для чувствительных данных (API keys)
+- В приложении отобразить текущую конфигурацию
+- Позволить пользователю изменять параметры
+
+**Файл конфигурации:**
+```json
+{
+  "AppSettings": {
+    "AppName": "My UWP App",
+    "Version": "1.0.0",
+    "IsDevelopment": false
+  },
+  "Logging": {
+    "LogLevel": "Info",
+    "EnableFileLogging": true
+  },
+  "ApiSettings": {
+    "BaseUrl": "https://api.example.com",
+    "Timeout": 30,
+    "ApiKey": "${API_KEY}"
+  },
+  "Database": {
+    "ConnectionString": "${DB_CONNECTION_STRING}",
+    "Timeout": 60
+  }
+}
+```
+
+**Код:**
+```csharp
+public class ConfigurationService
+{
+    private IConfiguration _configuration;
+    
+    public void LoadConfiguration(string environment)
+    {
+        var builder = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            .AddEnvironmentVariables();
+        
+        _configuration = builder.Build();
+    }
+    
+    public string GetApiKey() => _configuration["ApiSettings:ApiKey"];
+    public string GetDatabaseConnection() => _configuration["Database:ConnectionString"];
+}
+```
+
+**Критерии оценки:**
+- Правильная структура конфигурации
+- Поддержка разных окружений
+- Работа с переменными окружения
+- Функциональное приложение
+
+---
+
+## БИЛЕТ № 13 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 13.1
+**Тема: Работа с коллекциями**
+
+Разработайте UWP приложение для работы с различными типами коллекций.
+
+**Требования:**
+- Реализовать собственные классы `CustomList<T>` и `CustomDictionary<K,V>`
+- Протестировать их на производительность
+- В UI позволить выбрать тип коллекции и операцию:
+  - Добавить элемент
+  - Удалить элемент
+  - Поиск элемента
+  - Итерация по элементам
+- Вывести время выполнения каждой операции
+- Сравнить с встроенными коллекциями
+
+**Код:**
+```csharp
+public class CustomList<T> : IEnumerable<T>
+{
+    private T[] _items;
+    private int _count;
+    
+    public CustomList()
+    {
+        _items = new T[10];
+        _count = 0;
+    }
+    
+    public void Add(T item)
+    {
+        if (_count == _items.Length)
+            Array.Resize(ref _items, _items.Length * 2);
+        
+        _items[_count++] = item;
+    }
+    
+    public bool Remove(T item) { /* Реализация */ }
+    
+    public IEnumerator<T> GetEnumerator()
+    {
+        for (int i = 0; i < _count; i++)
+            yield return _items[i];
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность реализации коллекций
+- Корректность тестирования производительности
+- Функциональный UI
+- Анализ результатов
+
+---
+
+### Практическая задача 13.2
+**Тема: Рефлексия (Reflection)**
+
+Разработайте систему для автоматического маппирования объектов с использованием рефлексии.
+
+**Требования:**
+- Создать класс `ObjectMapper<TSource, TTarget>`
+- Использовать рефлексию для получения свойств класса
+- Автоматически копировать свойства с одинаковыми именами
+- Поддерживать атрибуты `[MapFrom]` для переименования свойств
+- Обрабатывать типы данных (конвертация между типами)
+- Написать unit-тесты
+
+**Код:**
+```csharp
+[AttributeUsage(AttributeTargets.Property)]
+public class MapFromAttribute : Attribute
+{
+    public string PropertyName { get; }
+    public MapFromAttribute(string propertyName) => PropertyName = propertyName;
+}
+
+public class ObjectMapper<TSource, TTarget> where TTarget : new()
+{
+    public TTarget Map(TSource source)
+    {
+        var target = new TTarget();
+        var sourceProps = typeof(TSource).GetProperties();
+        var targetProps = typeof(TTarget).GetProperties();
+        
+        foreach (var targetProp in targetProps)
+        {
+            var mapAttr = targetProp.GetCustomAttribute<MapFromAttribute>();
+            var sourcePropName = mapAttr?.PropertyName ?? targetProp.Name;
+            
+            var sourceProp = sourceProps.FirstOrDefault(p => p.Name == sourcePropName);
+            if (sourceProp != null && targetProp.CanWrite)
+            {
+                var value = sourceProp.GetValue(source);
+                targetProp.SetValue(target, value);
+            }
+        }
+        
+        return target;
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильное использование рефлексии
+- Работа атрибутов
+- Обработка ошибок
+- Unit-тесты
+
+---
+
+## БИЛЕТ № 14 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 14.1
+**Тема: Тестирование производительности**
+
+Проведите нагрузочное тестирование REST API из билета 6.
+
+**Требования:**
+- Использовать JMeter или аналогичный инструмент
+- Создать тест-план для загрузки API:
+  - 100 пользователей
+  - Время подъёма: 10 секунд
+  - Тесты на 5 минут
+- Измерить:
+  - Среднее время ответа
+  - 95-й перцентиль
+  - Максимальное время ответа
+  - Процент ошибок
+  - Пропускная способность
+- Создать отчёт с графиками
+- Определить узкие места
+
+**JMeter конфигурация:**
+```
+Thread Group:
+- Number of Threads: 100
+- Ramp-up Time: 10 sec
+- Loop Count: 1
+
+HTTP Request:
+- Server: localhost
+- Port: 5000
+- Path: /api/books
+
+Assertions:
+- Response Code: 200
+- Response Time < 1000ms
+```
+
+**Критерии оценки:**
+- Правильность настройки нагрузочного теста
+- Анализ результатов
+- Выявление проблем
+- Рекомендации по оптимизации
+
+---
+
+### Практическая задача 14.2
+**Тема: Работа с JSON и XML**
+
+Разработайте UWP приложение для преобразования данных между JSON и XML форматами.
+
+**Требования:**
+- Создать класс `DataConverter`
+- Методы:
+  - `ConvertJsonToXml(string json)` - преобразовать JSON в XML
+  - `ConvertXmlToJson(string xml)` - преобразовать XML в JSON
+- Использовать библиотеки для парсинга (Newtonsoft.Json, XDocument)
+- Обработать ошибки валидации
+- В UI разместить две области: ввод и вывод
+- Позволить пользователю выбрать направление преобразования
+
+**Код:**
+```csharp
+public class DataConverter
+{
+    public string ConvertJsonToXml(string json)
+    {
+        try
+        {
+            var jObject = JObject.Parse(json);
+            var xDocument = new XDocument();
+            xDocument.Add(ConvertJTokenToXElement("Root", jObject));
+            return xDocument.ToString();
+        }
+        catch (JsonReaderException ex)
+        {
+            throw new Exception("Ошибка парсинга JSON", ex);
+        }
+    }
+    
+    private XElement ConvertJTokenToXElement(string name, JToken token)
+    {
+        if (token is JValue jValue)
+            return new XElement(name, jValue.Value);
+        
+        var element = new XElement(name);
+        foreach (var property in token as JObject)
+        {
+            element.Add(ConvertJTokenToXElement(property.Key, property.Value));
+        }
+        return element;
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность преобразования форматов
+- Обработка ошибок
+- Функциональный UI
+- Корректность выходных данных
+
+---
+
+## БИЛЕТ № 15 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 15.1
+**Тема: Управление памятью и сборка мусора**
+
+Разработайте приложение для анализа управления памятью.
+
+**Требования:**
+- Создать классы с разными паттернами использования памяти
+- Реализовать IDisposable для корректного освобождения ресурсов
+- Создать тесты на утечки памяти
+- Использовать Dispose, using, try-finally
+- Профилировать приложение
+- Документировать найденные проблемы
+
+**Код:**
+```csharp
+public class ResourceHolder : IDisposable
+{
+    private IntPtr _unmanagedResource;
+    private bool _disposed = false;
+    
+    public ResourceHolder()
+    {
+        _unmanagedResource = Marshal.AllocHGlobal(1000);
+    }
+    
+    public void UseResource()
+    {
+        ThrowIfDisposed();
+        // Использование ресурса
+    }
+    
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+        
+        if (disposing)
+        {
+            // Освобождение managed ресурсов
+        }
+        
+        // Освобождение unmanaged ресурсов
+        if (_unmanagedResource != IntPtr.Zero)
+        {
+            Marshal.FreeHGlobal(_unmanagedResource);
+            _unmanagedResource = IntPtr.Zero;
+        }
+        
+        _disposed = true;
+    }
+    
+    ~ResourceHolder() => Dispose(false);
+    
+    private void ThrowIfDisposed()
+    {
+        if (_disposed)
+            throw new ObjectDisposedException(GetType().Name);
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность реализации IDisposable
+- Корректность работы с памятью
+- Результаты профилирования
+- Документация
+
+---
+
+### Практическая задача 15.2
+**Тема: Работа с сетевыми соединениями**
+
+Разработайте UWP приложение для работы с сетью с обработкой ошибок.
+
+**Требования:**
+- Создать класс `NetworkService` для HTTP запросов
+- Обработать различные ошибки:
+  - Нет интернета
+  - Timeout
+  - Сервер не доступен
+  - Ошибки парсинга
+- Реализовать retry логику с exponential backoff
+- В UI показать статус соединения
+- Позволить отправлять GET и POST запросы
+
+**Код:**
+```csharp
+public class NetworkService
+{
+    private readonly HttpClient _httpClient;
+    private readonly int _maxRetries = 3;
+    
+    public async Task<T> GetAsync<T>(string url) where T : class
+    {
+        return await ExecuteWithRetryAsync(async () =>
+        {
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(content);
+        });
+    }
+    
+    private async Task<T> ExecuteWithRetryAsync<T>(Func<Task<T>> action)
+    {
+        for (int i = 0; i < _maxRetries; i++)
+        {
+            try
+            {
+                return await action();
+            }
+            catch (HttpRequestException ex) when (i < _maxRetries - 1)
+            {
+                var delay = (int)Math.Pow(2, i) * 1000; // Exponential backoff
+                await Task.Delay(delay);
+            }
+        }
+        throw new Exception("Максимальное количество попыток превышено");
+    }
+}
+```
+
+**Критерии оценки:**
+- Обработка всех типов ошибок
+- Правильная реализация retry логики
+- Функциональный UI
+- Статус соединения отображается
+
+---
+
+## БИЛЕТ № 16 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 16.1
+**Тема: Паттерны архитектуры (MVC, MVP, MVVM)**
+
+Разработайте одно приложение в трёх архитектурных паттернах: MVC, MVP и MVVM.
+
+**Требования:** Приложение для управления списком задач (To-Do)
+
+**MVC (Model-View-Controller):**
+```csharp
+public class Task { public int Id { get; set; } public string Title { get; set; } }
+
+public class TaskController
+{
+    private TaskView _view;
+    private TaskService _service;
+    
+    public void AddTask(string title)
+    {
+        _service.Add(new Task { Title = title });
+        _view.RefreshTasks(_service.GetAll());
+    }
+}
+```
+
+**MVP (Model-View-Presenter):**
+```csharp
+public interface ITaskView { void ShowTasks(List<Task> tasks); }
+
+public class TaskPresenter
+{
+    private ITaskView _view;
+    
+    public void AddTask(string title)
+    {
+        var task = new Task { Title = title };
+        _service.Add(task);
+        _view.ShowTasks(_service.GetAll());
+    }
+}
+```
+
+**MVVM (Model-View-ViewModel):**
+```csharp
+public class TaskViewModel : INotifyPropertyChanged
+{
+    private ObservableCollection<Task> _tasks;
+    
+    public ObservableCollection<Task> Tasks
+    {
+        get => _tasks;
+        set { _tasks = value; OnPropertyChanged(); }
+    }
+    
+    public ICommand AddTaskCommand { get; }
+    
+    public TaskViewModel()
+    {
+        AddTaskCommand = new RelayCommand(AddTask);
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильная реализация каждого паттерна
+- Функциональные приложения
+- Понимание различий между паттернами
+- Документация
+
+---
+
+### Практическая задача 16.2
+**Тема: Параллельная обработка данных**
+
+Разработайте приложение для параллельной обработки больших массивов данных.
+
+**Требования:**
+- Создать массив чисел (1 000 000 элементов)
+- Реализовать несколько операций:
+  - Фильтрация (оставить только чётные)
+  - Маппирование (возвести в квадрат)
+  - Агрегация (найти сумму)
+- Реализовать последовательную обработку
+- Реализовать параллельную обработку (Parallel.For, PLINQ)
+- Сравнить время выполнения
+- В UI отобразить результаты и время выполнения
+
+**Код:**
+```csharp
+public class DataProcessor
+{
+    // Последовательная обработка
+    public long SequentialSum(int[] numbers)
+    {
+        long sum = 0;
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            if (numbers[i] % 2 == 0)
+                sum += numbers[i] * numbers[i];
+        }
+        return sum;
+    }
+    
+    // Параллельная обработка с PLINQ
+    public long ParallelSum(int[] numbers)
+    {
+        return numbers.AsParallel()
+                     .Where(n => n % 2 == 0)
+                     .Select(n => n * n)
+                     .Aggregate((a, b) => a + b);
+    }
+    
+    // Параллельная обработка с Parallel.For
+    public long ParallelForSum(int[] numbers)
+    {
+        long sum = 0;
+        object lockObj = new object();
+        
+        Parallel.For(0, numbers.Length, i =>
+        {
+            if (numbers[i] % 2 == 0)
+            {
+                lock (lockObj)
+                {
+                    sum += numbers[i] * numbers[i];
+                }
+            }
+        });
+        
+        return sum;
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность реализации параллельной обработки
+- Корректность результатов
+- Верное измерение времени
+- Анализ ускорения
+
+---
+
+## БИЛЕТ № 17 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 17.1
+**Тема: Оптимизация SQL запросов**
+
+Разработайте набор SQL запросов и оптимизируйте их.
+
+**Требования:**
+- Спроектировать БД с несколькими таблицами (Students, Courses, Enrollments, Grades)
+- Написать неоптимизированные запросы (с N+1 проблемой, без индексов)
+- Оптимизировать запросы:
+  - Добавить индексы
+  - Использовать JOINs вместо подзапросов
+  - Использовать EXPLAIN для анализа
+- Сравнить время выполнения
+- Документировать улучшения
+
+**Неоптимизированный запрос:**
+```sql
+SELECT * FROM Students;
+-- Для каждого студента отдельный запрос
+SELECT * FROM Enrollments WHERE StudentId = @StudentId;
+```
+
+**Оптимизированный запрос:**
+```sql
+SELECT s.Id, s.FullName, COUNT(e.Id) as CourseCount
+FROM Students s
+LEFT JOIN Enrollments e ON s.Id = e.StudentId
+GROUP BY s.Id, s.FullName;
+
+CREATE INDEX idx_enrollment_studentid ON Enrollments(StudentId);
+```
+
+**Критерии оценки:**
+- Правильность оптимизации
+- Значительное улучшение производительности
+- Использование EXPLAIN
+- Документация изменений
+
+---
+
+### Практическая задача 17.2
+**Тема: Кодировки и работа с Unicode**
+
+Разработайте приложение для демонстрации работы с разными кодировками.
+
+**Требования:**
+- Прочитать текстовый файл с разными кодировками (UTF-8, UTF-16, ASCII, Windows-1251)
+- Автоматически определить кодировку файла
+- Преобразовать между кодировками
+- Обработать ошибки при чтении
+- В UI отобразить исходный текст, определённую кодировку и преобразованный текст
+- Показать byte-представление текста
+
+**Код:**
+```csharp
+public class EncodingDetector
+{
+    public Encoding DetectEncoding(byte[] buffer)
+    {
+        // UTF-8 BOM
+        if (buffer.Length >= 3 && 
+            buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+            return Encoding.UTF8;
+        
+        // UTF-16 LE BOM
+        if (buffer.Length >= 2 && 
+            buffer[0] == 0xFF && buffer[1] == 0xFE)
+            return Encoding.Unicode;
+        
+        // ASCII detection
+        bool isAscii = buffer.All(b => b < 128);
+        if (isAscii) return Encoding.ASCII;
+        
+        return Encoding.UTF8;
+    }
+    
+    public string ConvertEncoding(string text, Encoding from, Encoding to)
+    {
+        byte[] fromBytes = from.GetBytes(text);
+        return to.GetString(fromBytes);
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильность определения кодировки
+- Корректное преобразование
+- Обработка ошибок
+- Функциональный UI
+
+---
+
+## БИЛЕТ № 18 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 18.1
+**Тема: Интеграционное тестирование**
+
+Разработайте набор интеграционных тестов для API из билета 6.
+
+**Требования:**
+- Создать тесты для каждого CRUD эндпоинта
+- Использовать TestServer для локального тестирования
+- Мокировать БД (use in-memory database)
+- Тест-сценарии:
+  - Успешное создание, получение, обновление, удаление
+  - Ошибка 404 при получении несуществующей книги
+  - Ошибка 400 при неправильных данных
+  - Проверка всех полей в ответе
+- Использовать NUnit или xUnit
+
+**Код:**
+```csharp
+[TestFixture]
+public class BooksControllerIntegrationTests
+{
+    private TestServer _server;
+    private HttpClient _client;
+    
+    [SetUp]
+    public void Setup()
+    {
+        var builder = new WebHostBuilder()
+            .UseStartup<Startup>();
+        
+        _server = new TestServer(builder);
+        _client = _server.CreateClient();
+    }
+    
+    [Test]
+    public async Task GetBooks_ReturnsOk()
+    {
+        var response = await _client.GetAsync("/api/books");
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+    }
+    
+    [Test]
+    public async Task CreateBook_ReturnsCreated()
+    {
+        var book = new { Title = "Test Book", Author = "Test Author" };
+        var content = new StringContent(JsonConvert.SerializeObject(book));
+        
+        var response = await _client.PostAsync("/api/books", content);
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+    }
+}
+```
+
+**Критерии оценки:**
+- Охват основных сценариев
+- Мокирование зависимостей
+- Корректность assertions
+- Скорость выполнения тестов
+
+---
+
+### Практическая задача 18.2
+**Тема: Валидация форм**
+
+Разработайте UWP приложение с комплексной валидацией формы регистрации.
+
+**Требования:**
+- Поля формы:
+  - Email (валидация по regex)
+  - Пароль (минимум 8 символов, буквы и цифры)
+  - Подтверждение пароля
+  - Имя (не пусто)
+  - Телефон (формат +7 (999) 123-45-67)
+- Валидация на клиентской стороне
+- Отобразить ошибки рядом с каждым полем (красный цвет)
+- Кнопка "Зарегистрироваться" активна только при корректных данных
+- При отправке показать сообщение об успехе
+
+**XAML:**
+```xml
+<StackPanel Spacing="10">
+    <TextBox x:Name="EmailBox" 
+             Header="Email" 
+             PlaceholderText="example@mail.com"
+             TextChanged="Email_TextChanged"/>
+    <TextBlock x:Name="EmailError" 
+               Foreground="Red" 
+               Visibility="Collapsed"/>
+    
+    <PasswordBox x:Name="PasswordBox" 
+                 Header="Пароль"/>
+    <TextBlock x:Name="PasswordError" 
+               Foreground="Red" 
+               Visibility="Collapsed"/>
+    
+    <Button Content="Зарегистрироваться" 
+            Click="Register_Click"
+            x:Name="RegisterButton"/>
+</StackPanel>
+```
+
+**Критерии оценки:**
+- Полнота валидации
+- Удобство использования
+- Корректное отображение ошибок
+- Логика кнопки активации
+
+---
+
+## БИЛЕТ № 19 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 19.1
+**Тема: Жизненный цикл объектов в памяти**
+
+Разработайте демонстрационное приложение жизненного цикла объектов.
+
+**Требования:**
+- Создать класс с конструктором, деструктором и финализатором
+- Отобразить в UI когда происходит каждое событие
+- Показать как сборка мусора влияет на объекты
+- Продемонстрировать разницу между stack и heap
+- Написать комментарии объясняющие каждый этап
+
+**Код:**
+```csharp
+public class LifecycleDemo
+{
+    public string Id { get; }
+    
+    public LifecycleDemo()
+    {
+        Id = Guid.NewGuid().ToString();
+        Debug.WriteLine($"[CONSTRUCTOR] Объект {Id} создан");
+    }
+    
+    ~LifecycleDemo()
+    {
+        Debug.WriteLine($"[FINALIZER] Объект {Id} удаляется сборщиком мусора");
+    }
+    
+    public void Dispose()
+    {
+        Debug.WriteLine($"[DISPOSE] Объект {Id} явно освобождён");
+    }
+}
+
+// Использование
+void DemoLifecycle()
+{
+    Debug.WriteLine("=== Создание объекта ===");
+    var obj = new LifecycleDemo(); // Вызов конструктора
+    
+    Debug.WriteLine("=== Удаление ссылки ===");
+    obj = null; // Объект становится недостижимым
+    
+    Debug.WriteLine("=== Запуск сборки мусора ===");
+    GC.Collect(); // Принудительный запуск сборщика мусора
+    GC.WaitForPendingFinalizers(); // Ожидание финализаторов
+}
+```
+
+**Критерии оценки:**
+- Правильное понимание жизненного цикла
+- Демонстрация конструктора и деструктора
+- Наглядное отображение в UI
+- Объяснение каждого этапа
+
+---
+
+### Практическая задача 19.2
+**Тема: Работа с данными в реальном времени**
+
+Разработайте UWP приложение чата с передачей сообщений в реальном времени.
+
+**Требования:**
+- Использовать WebSockets для передачи сообщений
+- Два пользователя могут общаться в реальном времени
+- Отправка сообщения нажатием кнопки или Enter
+- История сообщений сохраняется
+- Отображение статуса соединения (подключено/отключено)
+- Автоматическое переподключение при разрыве соединения
+
+**Код:**
+```csharp
+public class WebSocketChatService
+{
+    private ClientWebSocket _webSocket;
+    
+    public async Task ConnectAsync(string uri)
+    {
+        _webSocket = new ClientWebSocket();
+        await _webSocket.ConnectAsync(new Uri(uri), CancellationToken.None);
+    }
+    
+    public async Task SendMessageAsync(string message)
+    {
+        var bytes = Encoding.UTF8.GetBytes(message);
+        await _webSocket.SendAsync(
+            new ArraySegment<byte>(bytes),
+            WebSocketMessageType.Text,
+            true,
+            CancellationToken.None);
+    }
+    
+    public async Task<string> ReceiveMessageAsync()
+    {
+        var buffer = new byte[1024 * 4];
+        var result = await _webSocket.ReceiveAsync(
+            new ArraySegment<byte>(buffer),
+            CancellationToken.None);
+        
+        if (result.MessageType == WebSocketMessageType.Text)
+        {
+            return Encoding.UTF8.GetString(buffer, 0, result.Count);
+        }
+        
+        return null;
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильное использование WebSockets
+- Функциональный чат
+- Обработка ошибок соединения
+- Удобство использования
+
+---
+
+## БИЛЕТ № 20 - ПРАКТИЧЕСКИЕ ЗАДАЧИ
+
+### Практическая задача 20.1
+**Тема: Управление ветвлением в Git**
+
+Разработайте документ с пошаговым руководством по управлению ветками в Git.
+
+**Требования:**
+- Описать Git Flow модель (main, develop, feature, release, hotfix)
+- Для каждого типа ветки привести примеры команд
+- Описать процесс разрешения конфликтов
+- Привести примеры типичных конфликтов
+- Документ должен содержать:
+  - Правила именования веток
+  - Процесс создания фичи
+  - Процесс создания релиза
+  - Процесс хотфикса
+
+**Структура документа:**
+
+```markdown
+# Git Flow руководство
+
+## Основные ветки
+- main: Production-ready код
+- develop: Разработка
+
+## Ветки фич
+Создание:
+git checkout -b feature/add-auth develop
+
+Слияние:
+git checkout develop
+git pull origin develop
+git merge --no-ff feature/add-auth
+
+## Разрешение конфликтов
+git status  # Посмотреть конфликты
+# Отредактировать файлы
+git add .
+git commit -m "Разрешены конфликты"
+```
+
+**Критерии оценки:**
+- Полнота описания Git Flow
+- Правильность команд
+- Примеры конфликтов
+- Структура документа
+
+---
+
+### Практическая задача 20.2
+**Тема: Очереди сообщений (Message Queues)**
+
+Разработайте приложение с использованием RabbitMQ или аналога для асинхронной обработки.
+
+**Требования:**
+- Создать Producer, который отправляет сообщения в очередь
+- Создать Consumer, который получает и обрабатывает сообщения
+- Реализовать подтверждение получения (acknowledgment)
+- Обработка ошибок и переобработка сообщений
+- В UI отобразить:
+  - Список отправленных сообщений
+  - Статус обработки
+  - Количество сообщений в очереди
+
+**Код Producer:**
+```csharp
+public class MessageProducer
+{
+    private IConnection _connection;
+    private IModel _channel;
+    
+    public MessageProducer(string rabbitMqUri)
+    {
+        var factory = new ConnectionFactory { Uri = new Uri(rabbitMqUri) };
+        _connection = factory.CreateConnection();
+        _channel = _connection.CreateModel();
+        _channel.QueueDeclare(queue: "tasks", durable: true);
+    }
+    
+    public void SendMessage(string message)
+    {
+        var body = Encoding.UTF8.GetBytes(message);
+        _channel.BasicPublish(exchange: "",
+                            routingKey: "tasks",
+                            basicProperties: null,
+                            body: body);
+    }
+}
+```
+
+**Код Consumer:**
+```csharp
+public class MessageConsumer
+{
+    private IConnection _connection;
+    private IModel _channel;
+    
+    public void StartConsuming()
+    {
+        var factory = new ConnectionFactory { Uri = new Uri("amqp://guest:guest@localhost") };
+        _connection = factory.CreateConnection();
+        _channel = _connection.CreateModel();
+        _channel.QueueDeclare(queue: "tasks", durable: true);
+        
+        var consumer = new EventingBasicConsumer(_channel);
+        consumer.Received += (sender, args) =>
+        {
+            var message = Encoding.UTF8.GetString(args.Body.ToArray());
+            ProcessMessage(message);
+            _channel.BasicAck(args.DeliveryTag, false);
+        };
+        
+        _channel.BasicConsume(queue: "tasks", autoAck: false, consumer: consumer);
+    }
+    
+    private void ProcessMessage(string message)
+    {
+        // Обработка сообщения
+    }
+}
+```
+
+**Критерии оценки:**
+- Правильная реализация Producer/Consumer
+- Обработка ошибок
+- Подтверждение доставки
+- Функциональное приложение
+
+---
+
+# ДОПОЛНИТЕЛЬНЫЕ РЕКОМЕНДАЦИИ ДЛЯ СТУДЕНТОВ
+
+## При решении практических задач:
+
+1. **Читайте требования внимательно** - убедитесь что вы понимаете все требования
+2. **Планируйте решение** - набросайте примерный план перед написанием кода
+3. **Тестируйте по ходу разработки** - не оставляйте тестирование на конец
+4. **Обрабатывайте ошибки** - предусмотрите обработку исключений
+5. **Документируйте код** - добавляйте комментарии для сложных участков
+6. **Запросите feedback** - покажите код преподавателю для критики
+7. **Используйте контроль версий** - делайте коммиты по мере разработки
+8. **Следуйте best practices** - применяйте принципы Clean Code
+
+## Критерии оценки практических задач:
+
+- **Функциональность (40%)** - задача работает как требуется
+- **Качество кода (30%)** - читаемость, структура, отсутствие дублирования
+- **Тестирование (15%)** - наличие тестов, покрытие сценариев
+- **Документация (15%)** - комментарии, docstrings, README
+
+## Ресурсы для помощи:
+
+- Microsoft Docs: https://docs.microsoft.com/
+- Stack Overflow: https://stackoverflow.com/
+- Git Documentation: https://git-scm.com/doc
+- UWP Documentation: https://docs.microsoft.com/en-us/windows/uwp/
+
+---
+
+**Практические задачи созданы для дисциплины "Разработка программных модулей"**  
+**Специальность: 09.02.07 - Информационные системы и программирование**  
+**Квалификация: Программист**  
+**Уровень образования: Среднее профессиональное образование**
